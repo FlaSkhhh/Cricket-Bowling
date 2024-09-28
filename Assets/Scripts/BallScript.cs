@@ -23,6 +23,7 @@ public class BallScript : MonoBehaviour
     float swing;
 
     bool onSwing = true;
+    bool firstTouch;
 
     float fallTime;
     float finalTime;
@@ -63,9 +64,10 @@ public class BallScript : MonoBehaviour
 
     void OnCollisionEnter()
     {
-        if (!onSwing)
+        if (!onSwing && !firstTouch)
         {
             rb.AddForce(new Vector3(swing, 0, 0), ForceMode.VelocityChange); //spin
+            firstTouch = true;
         }
     }
 
@@ -74,6 +76,7 @@ public class BallScript : MonoBehaviour
         transform.position = cameraPos.position;
         rb.velocity = Vector3.zero;
         if (onSwing) { StopCoroutine(Swing()); }
+        firstTouch = false;
     }
 
     void SpeedCalc()
