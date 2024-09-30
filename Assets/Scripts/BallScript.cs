@@ -20,7 +20,7 @@ public class BallScript : MonoBehaviour
     float speedz;
 
     float ballSpeed;
-    float swing;
+    float swing;         //value is between -5 to 5
 
     bool onSwing = true;
     bool firstTouch;
@@ -55,11 +55,24 @@ public class BallScript : MonoBehaviour
 
     IEnumerator Swing()
     {
-        rb.AddForce(new Vector3(swing, 0, 0), ForceMode.VelocityChange);
-        yield return new WaitForSeconds(finalTime/2f);
-        rb.AddForce(new Vector3(-swing*(2f+ballSpeed/100f), 0, 0), ForceMode.VelocityChange);
-        yield return new WaitForSeconds(finalTime/2f);
-        rb.AddForce(new Vector3(-swing*0.7f, 0, 0), ForceMode.VelocityChange);
+        float timer = 0;
+        //rb.AddForce(new Vector3(swing, 0, 0), ForceMode.VelocityChange);
+        while(timer<finalTime/2)
+        {
+            rb.AddForce(new Vector3(swing/20, 0, 0) * Time.deltaTime * 50, ForceMode.VelocityChange);
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        //yield return new WaitForSeconds(finalTime/2f);
+        while (timer>finalTime/2 && timer < finalTime)
+        {
+            rb.AddForce(new Vector3(-3*swing/20, 0, 0)*Time.deltaTime*50, ForceMode.VelocityChange);
+            timer += Time.deltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        //rb.AddForce(new Vector3(-swing*(1f+ballSpeed/100f), 0, 0), ForceMode.VelocityChange);
+        //yield return new WaitForSeconds(finalTime/2f);
+        //rb.AddForce(new Vector3(-swing*0.7f, 0, 0), ForceMode.VelocityChange);
     }
 
     void OnCollisionEnter()
@@ -85,7 +98,7 @@ public class BallScript : MonoBehaviour
         speedz = distancez / fallTime;                                           // forward speed required
         finalTime = distancez / (speedz + ballSpeed);
 
-        speedy = (cameraPos.position.y - 5 * finalTime * finalTime) / finalTime; // downwars speed required
+        speedy = (cameraPos.position.y - 5 * finalTime * finalTime) / finalTime; // downwards speed required
 
         float distancex = bounceSpot.position.x - cameraPos.position.x;
         speedx = distancex / finalTime;                                          // sideways speed required
