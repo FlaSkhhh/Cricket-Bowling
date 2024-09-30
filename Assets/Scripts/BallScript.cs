@@ -59,14 +59,14 @@ public class BallScript : MonoBehaviour
         //rb.AddForce(new Vector3(swing, 0, 0), ForceMode.VelocityChange);
         while(timer<finalTime/2)
         {
-            rb.AddForce(new Vector3(swing/20, 0, 0) * Time.deltaTime * 50, ForceMode.VelocityChange);
+            rb.AddForce(new Vector3(swing/20, 0, 0) * Time.deltaTime * 50, ForceMode.VelocityChange); //increment velocity for half time till bounce
             timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
         //yield return new WaitForSeconds(finalTime/2f);
         while (timer>finalTime/2 && timer < finalTime)
         {
-            rb.AddForce(new Vector3(-3*swing/20, 0, 0)*Time.deltaTime*50, ForceMode.VelocityChange);
+            rb.AddForce(new Vector3(-3*swing/20, 0, 0)*Time.deltaTime*50, ForceMode.VelocityChange); //now add opposite velocity 3x fast to get back to original position on x axis
             timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
